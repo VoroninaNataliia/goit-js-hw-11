@@ -8,6 +8,7 @@ const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const loadMore = document.querySelector('.load-more');
 const msgEndText = document.querySelector('.msg-end-text');
+const simpleLightBox = new SimpleLightbox('.gallery a')
 
 let query = '';
 let page = 1;
@@ -67,7 +68,7 @@ async function onSearchForm(e) {
             );
           } else {
             galleryCreation(searchImgs.hits);
-            simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+            simpleLightBox.refresh();
             Notiflix.Notify.success(`We found ${searchImgs.totalHits} images.`);
 
             if (searchImgs.totalHits >= 40) {
@@ -95,6 +96,7 @@ const onLoadMoreClick = async () => {
     }
   
 };
+  
 loadMore.addEventListener('click', onLoadMoreClick);
 
 

@@ -70,7 +70,7 @@ async function onSearchForm(e) {
             simpleLightBox = new SimpleLightbox('.gallery a').refresh();
             Notiflix.Notify.success(`We found ${searchImgs.totalHits} images.`);
 
-            if (searchImgs.totalHits > 40) {
+            if (searchImgs.totalHits >= 40) {
               loadMore.classList.remove('is-hidden');
             } else {
               loadMore.classList.add('is-hidden');

@@ -46,50 +46,54 @@ function galleryCreation(images) {
 searchForm.addEventListener('submit', onSearchForm);
 
 async function onSearchForm(e) {
-  e.preventDefault();
-    page = 1;
-    query = e.target.elements.searchQuery.value.trim();
-    gallery.innerHTML = '';
+    try {
+      e.preventDefault();
+      page = 1;
+      query = e.target.elements.searchQuery.value.trim();
+      gallery.innerHTML = '';
 
-  if (query === '') {
-    Notiflix.Notify.failure(
-      'The search string cannot be empty. Please specify your search query.'
-    );
-    return;
-  }
-
-  await getImgs(query, page)
-      .then(data => {
-        
-      if (data.totalHits === 0) {
+      if (query === '') {
         Notiflix.Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.'
+          'The search string cannot be empty. Please specify your search query.'
         );
-      } else {
-         galleryCreation(data.hits);
-        simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-          Notiflix.Notify.success(`We found ${data.totalHits} images.`);
-
-             if (data.totalHits > 40) {
-               loadMore.classList.remove('is-hidden');
-             } else {
-               loadMore.classList.add('is-hidden');
-             }
+        return;
       }
-    })
-    .catch(error => console.log(error))
-    .finally(() => {
-        searchForm.reset();   
-    });     
-    
-}
+
+        const searchImgs = await getImgs(query, page)
+
+          if (searchImgs.totalHits === 0) {
+            Notiflix.Notify.failure(
+              'Sorry, there are no images matching your search query. Please try again.'
+            );
+          } else {
+            galleryCreation(searchImgs.hits);
+            simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+            Notiflix.Notify.success(`We found ${searchImgs.totalHits} images.`);
+
+            if (searchImgs.totalHits > 40) {
+              loadMore.classList.remove('is-hidden');
+            } else {
+              loadMore.classList.add('is-hidden');
+            }
+          }
+        }
+        
+    catch (error) {
+    console.warn(error)
+    }
+
 
 const onLoadMoreClick = async () => {
-    page += 1;
-    const data = await getImgs(query, page);
- 
-    galleryCreation(data.hits);
+    try {
+          page += 1;
+          const data = await getImgs(query, page);
 
+          galleryCreation(data.hits);
+        
+    } catch (error) {
+        console.warn(error)
+    }
+  
 };
 loadMore.addEventListener('click', onLoadMoreClick);
 

@@ -5,10 +5,10 @@ const API_KEY = '34265983-c679b67e6e799979f0bbd59de';
 
 
 export async function getImgs(query, page) {
-  const data = await axios.get(
+  const response = await axios.get(
     `${BASE_URL}?key=${API_KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`
   );
-    return data.data;
+    return response.data;
 }
 
 console.log(getImgs)

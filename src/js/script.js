@@ -47,56 +47,55 @@ function galleryCreation(images) {
 searchForm.addEventListener('submit', onSearchForm);
 
 async function onSearchForm(e) {
-    try {
-      e.preventDefault();
-      page = 1;
-      query = e.target.elements.searchQuery.value.trim();
-      gallery.innerHTML = '';
+  try {
+    e.preventDefault();
+    page = 1;
+    query = e.target.elements.searchQuery.value.trim();
+    gallery.innerHTML = '';
 
-      if (query === '') {
-        Notiflix.Notify.failure(
-          'The search string cannot be empty. Please specify your search query.'
-        );
-        return;
-      }
-
-        const searchImgs = await getImgs(query, page)
-
-          if (searchImgs.totalHits === 0) {
-            Notiflix.Notify.failure(
-              'Sorry, there are no images matching your search query. Please try again.'
-            );
-          } else {
-            galleryCreation(searchImgs.hits);
-            simpleLightBox.refresh();
-            Notiflix.Notify.success(`We found ${searchImgs.totalHits} images.`);
-
-            if (searchImgs.totalHits >= 40) {
-              loadMore.classList.remove('is-hidden');
-            } else {
-              loadMore.classList.add('is-hidden');
-            }
-          }
-        }
-        
-    catch (error) {
-    console.warn(error)
+    if (query === '') {
+      Notiflix.Notify.failure(
+        'The search string cannot be empty. Please specify your search query.'
+      );
+      return;
     }
 
+    const searchImgs = await getImgs(query, page)
 
-const onLoadMoreClick = async () => {
+    if (searchImgs.totalHits === 0) {
+      Notiflix.Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+    } else {
+      galleryCreation(searchImgs.hits);
+      simpleLightBox.refresh();
+      Notiflix.Notify.success(`We found ${searchImgs.totalHits} images.`);
+
+      if (searchImgs.totalHits >= 40) {
+        loadMore.classList.remove('is-hidden');
+      } else {
+        loadMore.classList.add('is-hidden');
+      }
+    }
+  }
+        
+  catch (error) {
+    console.warn(error)
+  }
+
+
+  const onLoadMoreClick = async () => {
     try {
-          page += 1;
-          const data = await getImgs(query, page);
+      page += 1;
+      const data = await getImgs(query, page);
 
-          galleryCreation(data.hits);
+      galleryCreation(data.hits);
         
     } catch (error) {
-        console.warn(error)
+      console.warn(error)
     }
   
+  }
 };
   
 loadMore.addEventListener('click', onLoadMoreClick);
-
-

@@ -84,17 +84,17 @@ async function onSearchForm(e) {
   }
 
 
-  const onLoadMoreClick = async () => {
-    try {
-      page += 1;
-      const data = await getImgs(query, page);
-
-      galleryCreation(data.hits);
-        
-    } catch (error) {
-      console.warn(error)
-    }
   
+};
+
+const onLoadMoreClick = async () => {
+  try {
+    page += 1;
+    const data = await getImgs(query, page);
+
+    galleryCreation(data.hits);
+  } catch (error) {
+    console.warn(error);
   }
 };
   
